@@ -267,14 +267,6 @@ function validateFields(
 ): void {
   const fields = objectValues(type.getFields());
 
-  // Objects and Interfaces both must define one or more fields.
-  if (fields.length === 0) {
-    context.reportError(
-      `Type ${type.name} must define one or more fields.`,
-      getAllNodes(type),
-    );
-  }
-
   for (const field of fields) {
     // Ensure they are named correctly.
     validateName(context, field);
@@ -493,13 +485,6 @@ function validateInputFields(
   inputObj: GraphQLInputObjectType,
 ): void {
   const fields = objectValues(inputObj.getFields());
-
-  if (fields.length === 0) {
-    context.reportError(
-      `Input Object type ${inputObj.name} must define one or more fields.`,
-      getAllNodes(inputObj),
-    );
-  }
 
   // Ensure the arguments are valid
   for (const field of fields) {

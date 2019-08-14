@@ -407,7 +407,7 @@ describe('Type System: Objects must have fields', () => {
     expect(validateSchema(schema)).to.deep.equal([]);
   });
 
-  it('rejects an Object type with missing fields', () => {
+  it('accepts an Object type with missing fields', () => {
     const schema = buildSchema(`
       type Query {
         test: IncompleteObject
@@ -415,12 +415,7 @@ describe('Type System: Objects must have fields', () => {
 
       type IncompleteObject
     `);
-    expect(validateSchema(schema)).to.deep.equal([
-      {
-        message: 'Type IncompleteObject must define one or more fields.',
-        locations: [{ line: 6, column: 7 }],
-      },
-    ]);
+    expect(validateSchema(schema)).to.deep.equal([]);
 
     const manualSchema = schemaWithFieldType(
       new GraphQLObjectType({
@@ -428,11 +423,7 @@ describe('Type System: Objects must have fields', () => {
         fields: {},
       }),
     );
-    expect(validateSchema(manualSchema)).to.deep.equal([
-      {
-        message: 'Type IncompleteObject must define one or more fields.',
-      },
-    ]);
+    expect(validateSchema(manualSchema)).to.deep.equal([]);
 
     const manualSchema2 = schemaWithFieldType(
       new GraphQLObjectType({
@@ -442,11 +433,7 @@ describe('Type System: Objects must have fields', () => {
         },
       }),
     );
-    expect(validateSchema(manualSchema2)).to.deep.equal([
-      {
-        message: 'Type IncompleteObject must define one or more fields.',
-      },
-    ]);
+    expect(validateSchema(manualSchema2)).to.deep.equal([]);
   });
 
   it('rejects an Object type with incorrectly named fields', () => {
@@ -707,7 +694,7 @@ describe('Type System: Input Objects must have fields', () => {
     expect(validateSchema(schema)).to.deep.equal([]);
   });
 
-  it('rejects an Input Object type with missing fields', () => {
+  it('accepts an Input Object type with missing fields', () => {
     let schema = buildSchema(`
       type Query {
         field(arg: SomeInputObject): String
@@ -725,13 +712,7 @@ describe('Type System: Input Objects must have fields', () => {
       `),
     );
 
-    expect(validateSchema(schema)).to.deep.equal([
-      {
-        message:
-          'Input Object type SomeInputObject must define one or more fields.',
-        locations: [{ line: 6, column: 7 }, { line: 4, column: 9 }],
-      },
-    ]);
+    expect(validateSchema(schema)).to.deep.equal([]);
   });
 
   it('accepts an Input Object with breakable circular reference', () => {
